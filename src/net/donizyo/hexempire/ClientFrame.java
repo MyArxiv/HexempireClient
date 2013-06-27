@@ -69,6 +69,11 @@ class ClientFrame extends Frame implements Runnable {
 		}
 		while (!isCloseRequested) {
 			// TODO nothing to do
+			try {
+				Thread.sleep(Utils.DELAY_LONG);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 		dispose();
 		System.exit(0);

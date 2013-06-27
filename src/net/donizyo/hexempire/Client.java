@@ -22,7 +22,6 @@ import javax.sound.midi.InvalidMidiDataException;
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.MidiUnavailableException;
 import javax.sound.midi.Sequencer;
-import javax.swing.Icon;
 import javax.swing.JOptionPane;
 
 import net.donizyo.hexempire.util.AudioEntity;
@@ -51,6 +50,7 @@ public class Client implements Runnable, Communication, Configuration {
 	private final ClientFrame frame;
 
 	private String host;
+	protected volatile int gameid = -1;
 	protected volatile char movingNation = 1;
 	protected volatile char moveLeft = 5;
 
@@ -144,8 +144,7 @@ public class Client implements Runnable, Communication, Configuration {
 		//TODO drawGridInfo implements
 	}
 	
-	public void run()
-	{
+	public void run() {
 		try {
 			Display.setParent(canvas);
 			Display.setVSyncEnabled(true);
@@ -163,8 +162,7 @@ public class Client implements Runnable, Communication, Configuration {
 		long sleepTime = 0l;
 		long allowedInterval = 9_000_000_000l;
 		long interval = 0l;
-		while (!Display.isCloseRequested())
-		{
+		while (!Display.isCloseRequested()) {
 			fpsManager.updateFPS();//GL11.glViewport(0, 0, canvas.getWidth(), canvas.getHeight());
 			if (!frame.isFocused()) {
 				if (sleepTime == 0) {
@@ -199,6 +197,7 @@ public class Client implements Runnable, Communication, Configuration {
 			}
 		}
 		Display.destroy();
+		ClientEntry.destroyEngine();
 	}
 
 	private static final float h = (float) b;
@@ -280,7 +279,7 @@ public class Client implements Runnable, Communication, Configuration {
 			}
 			audioEntities = setAudioList();
 		}
-		
+
 		abstract Set<AudioEntity> setAudioList();
 
 		void createPlayer(final int audioId) throws InvalidMidiDataException, IOException {

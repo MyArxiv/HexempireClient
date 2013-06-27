@@ -16,4 +16,6 @@ public class ClientEntry {
 	public native void process(int command);
 
 	public native void mouseEvent(int button, int x, int y);
+
+	protected static native void destroyEngine();
 }
